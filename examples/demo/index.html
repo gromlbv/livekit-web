@@ -21,16 +21,17 @@
           <br />
           <div id="connect-area">
             <div>
-              <b>LiveKit URL</b>
-            </div>
-            <div>
-              <input type="text" class="form-control" id="url" value="ws://localhost:7880" />
-            </div>
-            <div>
               <b>Token</b>
             </div>
             <div>
               <input type="text" class="form-control" id="token" />
+              <button type="button" class="btn btn-secondary mt-1" onclick="appActions.generateToken()">Generate Token</button>
+            </div>
+            <div>
+              <b>Room Name</b>
+            </div>
+            <div>
+              <input type="text" class="form-control" id="room-name" value="test-room" />
             </div>
             <div>
               <b>E2EE key</b>

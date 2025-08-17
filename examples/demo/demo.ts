@@ -38,6 +38,7 @@ import {
   supportsAV1,
   supportsVP9,
 } from '../../src/index';
+import { AccessToken } from 'livekit-server-sdk';
 import { isSVCCodec, sleep, supportsH265 } from '../../src/room/utils';
 
 setLogLevel(LogLevel.debug);
@@ -78,6 +79,16 @@ function updateSearchParams(url: string, token: string, key: string) {
 
 // handles actions from the HTML
 const appActions = {
+  generateToken: async () => {
+    const roomName = (<HTMLInputElement>$('room-name')).value;
+    const at = new AccessToken('devkey', 'secret', {
+      identity: 'user',
+      name: 'Test User',
+    });
+    at.addGrant({ roomJoin: true, room: roomName });
+    const token = await at.toJwt();
+    (<HTMLInputElement>$('token')).value = token;
+  },
   sendFile: async () => {
     console.log('start sending');
     const file = ($('file') as HTMLInputElement).files?.[0]!;
@@ -88,7 +99,7 @@ const appActions = {
     });
   },
   connectWithFormInput: async () => {
-    const url = (<HTMLInputElement>$('url')).value;
+    const url = 'ws://31.97.78.244:7888';
     const token = (<HTMLInputElement>$('token')).value;
     const simulcast = (<HTMLInputElement>$('simulcast')).checked;
     const dynacast = (<HTMLInputElement>$('dynacast')).checked;
@@ -464,7 +475,7 @@ const appActions = {
         const link = document.createElement('link');
         link.rel = 'stylesheet';
         link.type = styleSheet.type;
-        link.media = styleSheet.media;
+        link.media = styleSheet.media.toString();
         link.href = styleSheet.href!;
         pipWindow?.document.head.appendChild(link);
       }
